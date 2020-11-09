@@ -17,7 +17,7 @@ public class TestRepresentant {
 		occitanie = new ZoneGeographique(1, "Occitanie");
 		occitanie.setIndemniteRepas(INDEMNITE_OCCITANIE);
 
-		r = new Representant(36, "Bastide", "Rémi", occitanie);	
+		r = new Representant(36, "Bastide", "Rémi", occitanie);
 		r.setSalaireFixe(FIXE_BASTIDE);				
 	}
 	
@@ -30,9 +30,7 @@ public class TestRepresentant {
 		
 		// On calcule son salaire pour le mois 0 avec 10% de part sur CA
 		float salaire = r.salaireMensuel(0, POURCENTAGE);
-		
-		// A quel résultat on s'attend ?
-		
+
 		assertEquals(// Comparaison de "float"
 			// valeur attendue
 			FIXE_BASTIDE + INDEMNITE_OCCITANIE + CA * POURCENTAGE,
@@ -50,7 +48,6 @@ public class TestRepresentant {
 		float POURCENTAGE= 0.1f; // 10% de pourcentage sur CA
 		
 		// On n'enregistre aucun CA
-		//r.enregistrerCA(0, 10000f);
 		
 		// On calcule son salaire pour le mois 0 avec 10% de part sur CA
 		float salaire = r.salaireMensuel(0, POURCENTAGE);
@@ -79,7 +76,86 @@ public class TestRepresentant {
 			// Si on arrive ici, c'est normal, c'est le comportement attendu
 		}
 
+
 	}
-	
-	
+	@Test
+	public void testpourcentageNegatifImpossible() {
+
+		try {
+			// On enregistre un pourcentage négatif, que doit-il se passer ?
+			// On s'attend à recevoir une exception
+			r.salaireMensuel(0, -0.1f);
+			// Si on arrive ici, c'est une erreur, le test doit échouer
+			fail("Un pourcentage négatif doit générer une exception"); // Forcer l'échec du test
+		} catch (IllegalArgumentException e) {
+			// Si on arrive ici, c'est normal, c'est le comportement attendu
+		}
+
+	}
+	@Test
+	public void testMoisInfZeroCAImpossible() {
+
+		try {
+			// On enregistre un mois inférieur à 0
+			r.enregistrerCA(-30, 100f);
+			// Si on arrive ici, c'est une erreur, le test doit échouer
+			fail("Un mois négatif doit générer une exception"); // Forcer l'échec du test
+		} catch (IllegalArgumentException e) {
+			// Si on arrive ici, c'est normal, c'est le comportement attendu
+		}
+
+	}
+	@Test
+	public void testMoisSupOnzeCAImpossible() {
+
+		try {
+			// On enregistre un mois supérieur à 12
+			r.enregistrerCA(12, 100f);
+			// Si on arrive ici, c'est une erreur, le test doit échouer
+			fail("Un mois supérieur à 11 doit générer une exception"); // Forcer l'échec du test
+		} catch (IllegalArgumentException e) {
+			// Si on arrive ici, c'est normal, c'est le comportement attendu
+		}
+
+	}
+	@Test
+	public void testMoisInfZeroSalaireImpossible() {
+
+		try {
+			// On enregistre un mois inférieur à 0
+			r.salaireMensuel(-30, 0.1f);
+			// Si on arrive ici, c'est une erreur, le test doit échouer
+			fail("Un mois négatif doit générer une exception"); // Forcer l'échec du test
+		} catch (IllegalArgumentException e) {
+			// Si on arrive ici, c'est normal, c'est le comportement attendu
+		}
+
+	}
+	@Test
+	public void testMoisSupOnzeSalaireImpossible() {
+
+		try {
+			// On enregistre un mois supérieur à 12
+			r.salaireMensuel(12, 0.1f);
+			// Si on arrive ici, c'est une erreur, le test doit échouer
+			fail("Un mois supérieur à 11 doit générer une exception"); // Forcer l'échec du test
+		} catch (IllegalArgumentException e) {
+			// Si on arrive ici, c'est normal, c'est le comportement attendu
+		}
+
+	}
+	@Test
+	public void testgetNum(){
+		assertEquals(r.getNumero(),36, "Numéro différents");
+	}
+	@Test
+	public void testgetPrenom(){
+		assertEquals(r.getPrenom(),"Rémi", "Prénom différent");
+	}
+	@Test
+	public void testgetNom(){
+		assertEquals(r.getNom(),"Bastide", "Nom différents");
+	}
+
+
 }
